@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: Meeting Application
+  datasource:
+    url: jdbc:mysql://localhost:${MYSQL_SERVER_PORT}/meeting?serverTimezone=Asia/Seoul
+    #url: jdbc:mysql://my-mysql:${MYSQL_SERVER_PORT}/meeting?serverTimezone=Asia/Seoul
+    username: ${MYSQL_SERVER_USERNAME}
+    password: ${MYSQL_SERVER_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+    
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
