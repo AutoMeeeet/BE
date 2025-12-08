@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS `USERS` (
   `nickname` VARCHAR(16) NOT NULL,
   `provider` ENUM('KAKAO', 'GOOGLE', 'LOCAL') NOT NULL,
   `profile_image` VARCHAR(512) NULL,
+  `role` ENUM('USERS', 'ADMIN') NOT NULL,
   PRIMARY KEY (`user_id`)
 );
 
@@ -20,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `MEETING` (
   `location` VARCHAR(255) NOT NULL,
   `date` DATETIME NOT NULL,
   `meeting_url` VARCHAR(2048) NOT NULL,
+  `meeting_head_count` INT NOT NULL,
   PRIMARY KEY (`meeting_id`)
 );
 

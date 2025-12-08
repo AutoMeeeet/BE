@@ -18,4 +18,5 @@ public class Meeting {
     private String location;
     private LocalDate date;
     private String meetingUrl;
+    private Integer meetingHeadCount;
 }

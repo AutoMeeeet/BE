@@ -1,11 +1,8 @@
-package com.teamproject.meeting.mapper;
-
-import org.apache.ibatis.annotations.Mapper;
+package com.teamproject.meeting.port;
 
 import com.teamproject.meeting.entity.Users;
 
-@Mapper
-public interface UsersMapper {
+public interface UsersRepositoryPort {
 	boolean existsByEmail(String email); // 회원조회(유무)
 	void saveUsers(Users users); // 회원가입
 	Users findByEmail(String email); // 회원조회

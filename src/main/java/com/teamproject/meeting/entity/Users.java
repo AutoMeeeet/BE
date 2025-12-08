@@ -1,5 +1,8 @@
 package com.teamproject.meeting.entity;
 
+import com.teamproject.meeting.enums.users.Provider;
+import com.teamproject.meeting.enums.users.Role;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +13,7 @@ public class Users {
     private String email;
     private String password;
     private String nickname;
-    private String provider;
+    private Provider provider;
     private String profileImageUrl;
+    private Role role;
 }
