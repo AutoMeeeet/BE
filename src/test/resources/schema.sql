@@ -1,0 +1,64 @@
+-- USERS 테이블
+CREATE TABLE IF NOT EXISTS USERS (
+  user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(128),
+  nickname VARCHAR(16) NOT NULL,
+  provider VARCHAR(20) NOT NULL,
+  profile_image VARCHAR(512),
+  role VARCHAR(20) NOT NULL
+);
+
+-- MEETING 테이블
+CREATE TABLE IF NOT EXISTS MEETING (
+  meeting_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(225) NOT NULL,
+  start_time TIMESTAMP,
+  end_time TIMESTAMP,
+  meeting_state VARCHAR(20) NOT NULL,
+  location_type VARCHAR(20) NOT NULL,
+  location VARCHAR(255) NOT NULL,
+  date TIMESTAMP NOT NULL,
+  meeting_url VARCHAR(2048) NOT NULL,
+  meeting_head_count INT NOT NULL
+);
+
+-- MEETING_PARTICIPANT 테이블
+CREATE TABLE IF NOT EXISTS MEETING_PARTICIPANT (
+  meeting_participant_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  meeting_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  role VARCHAR(20) NOT NULL,
+  email_notification BOOLEAN NOT NULL,
+  permission VARCHAR(20) NOT NULL,
+  timetable_case BOOLEAN NOT NULL,
+  vote_case BOOLEAN NOT NULL,
+  FOREIGN KEY (meeting_id) REFERENCES MEETING(meeting_id),
+  FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+);
+
+-- MEETING_AVAILABILITY 테이블
+CREATE TABLE IF NOT EXISTS MEETING_AVAILABILITY (
+  meeting_availability_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  meeting_participant_id BIGINT NOT NULL,
+  start_time TIMESTAMP NOT NULL,
+  end_time TIMESTAMP NOT NULL,
+  weight INT NOT NULL,
+  FOREIGN KEY (meeting_participant_id) REFERENCES MEETING_PARTICIPANT(meeting_participant_id)
+);
+
+-- MEETING_REFERENCE 테이블
+CREATE TABLE IF NOT EXISTS MEETING_REFERENCE (
+  reference_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  meeting_id BIGINT NOT NULL,
+  reference_url VARCHAR(2048) NOT NULL,
+  FOREIGN KEY (meeting_id) REFERENCES MEETING(meeting_id)
+);
+
+-- MINUTES 테이블
+CREATE TABLE IF NOT EXISTS MINUTES (
+  minutes_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  meeting_id BIGINT NOT NULL,
+  minutes_url VARCHAR(2048) NOT NULL,
+  FOREIGN KEY (meeting_id) REFERENCES MEETING(meeting_id)
+);
