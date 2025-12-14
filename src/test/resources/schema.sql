@@ -18,9 +18,8 @@ CREATE TABLE IF NOT EXISTS MEETING (
   meeting_state VARCHAR(20) NOT NULL,
   location_type VARCHAR(20) NOT NULL,
   location VARCHAR(255) NOT NULL,
-  date TIMESTAMP NOT NULL,
   meeting_url VARCHAR(2048) NOT NULL,
-  meeting_head_count INT NOT NULL
+  capacity INT NOT NULL
 );
 
 -- MEETING_PARTICIPANT 테이블

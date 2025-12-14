@@ -16,12 +16,11 @@ CREATE TABLE IF NOT EXISTS `MEETING` (
   `title` VARCHAR(225) NOT NULL,
   `start_time` DATETIME NULL,
   `end_time` DATETIME NULL,
-  `meeting_state` ENUM('확정', '미확정', '종료') NOT NULL,
-  `location_type` ENUM('온라인', '오프라인') NOT NULL,
+  `meeting_state` ENUM('CONFIRMED', 'PENDING', 'FINISHED') NOT NULL,
+  `location_type` ENUM('ONLINE', 'OFFLINE') NOT NULL,
   `location` VARCHAR(255) NOT NULL,
-  `date` DATETIME NOT NULL,
   `meeting_url` VARCHAR(2048) NOT NULL,
-  `meeting_head_count` INT NOT NULL,
+  `capacity` INT NOT NULL,
   PRIMARY KEY (`meeting_id`)
 );
 

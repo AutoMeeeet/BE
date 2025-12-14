@@ -1,14 +1,11 @@
-package com.teamproject.meeting.mapper;
+package com.teamproject.meeting.port;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 
 import com.teamproject.meeting.dto.meeting.MeetingListDto;
 import com.teamproject.meeting.enums.meeting.MeetingState;
 import com.teamproject.meeting.enums.meeting.MeetingTimeType;
 
-@Mapper
-public interface MeetingMapper {
+public interface MeetingRepositoryPort {
 	List<MeetingListDto> getMeetings(Long userId, MeetingState state, MeetingTimeType timeType);
 }

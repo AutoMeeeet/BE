@@ -16,6 +16,10 @@ public class CustomUserDetails implements UserDetails {
 
         this.users = users;
     }
+    
+    public Long getUserId() { // 회원 인증 매개변수로 사용
+    	return users.getUserId();
+    }
 
 
     @Override
