@@ -28,4 +28,19 @@ public class MyBatisUserRepositoryAdapter implements UsersRepositoryPort {
 	public Users findByEmail(String email) {
 		return usersMapper.findByEmail(email);
 	}
+	
+	@Override
+	public void changeNickname(String name, Long userId) {
+		usersMapper.changeNickname(name, userId);
+	}
+	
+	@Override
+	public String findPasswordHashByUserId(Long userId) {
+		return usersMapper.findPasswordHashByUserId(userId);
+	}
+	
+	@Override
+	public void changePW(Long userId, String encodedPW) {
+		usersMapper.changePW(userId, encodedPW);
+	}
 }

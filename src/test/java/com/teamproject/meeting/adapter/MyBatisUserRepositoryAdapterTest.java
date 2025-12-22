@@ -8,15 +8,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("test")   // application-test.yml 적용
+@ActiveProfiles("test")
+@Sql(scripts = "classpath:schema-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class MyBatisUserRepositoryAdapterTest {
 
+    private final UsersRepositoryPort usersRepositoryPort;
+    
     @Autowired
-    private UsersRepositoryPort usersRepositoryPort;
+    MyBatisUserRepositoryAdapterTest(UsersRepositoryPort usersRepositoryPort) {
+        this.usersRepositoryPort = usersRepositoryPort;
+    }
 
     @Test
     void existsByEmail_저장된이메일이면_true반환() {
@@ -57,5 +63,46 @@ class MyBatisUserRepositoryAdapterTest {
         assertEquals("bbb@test.com", result.getEmail());
         assertEquals("9999", result.getPassword());
         assertEquals(Role.USERS, result.getRole());
+    }
+    
+    @Test
+    void findPasswordHashByUserId_비밀번호를_정상조회한다() {
+
+    	// given
+        Long userId = 1L; // seed data 기준
+
+        // when
+        String passwordHash = usersRepositoryPort.findPasswordHashByUserId(userId);
+
+        // then
+        assertNotNull(passwordHash);
+        assertEquals("pw", passwordHash);
+    }
+    
+    @Test
+    void changePW_비밀번호가_정상적으로_변경된다() {
+
+        Users user = new Users();
+        user.setEmail("change@test.com");
+        user.setPassword("oldPassword");
+        user.setNickname("테스터2");
+        user.setProvider(Provider.LOCAL);
+        user.setRole(Role.USERS);
+        
+        usersRepositoryPort.saveUsers(user);
+        
+        Long generatedId = user.getUserId();
+        String newEncodedPW = "newEncodedPassword";
+
+        usersRepositoryPort.changePW(generatedId, newEncodedPW);
+
+        String updatedPW = usersRepositoryPort.findPasswordHashByUserId(generatedId);
+        assertNotNull(updatedPW);
+        assertEquals(newEncodedPW, updatedPW);
+    }
+    
+    @Test
+    void USERS_데이터가_존재한다() {
+        assertTrue(usersRepositoryPort.existsByEmail("test@test.com"));
     }
 }

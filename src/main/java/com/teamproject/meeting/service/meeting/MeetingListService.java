@@ -3,6 +3,7 @@ package com.teamproject.meeting.service.meeting;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.teamproject.meeting.dto.meeting.MeetingListDto;
 import com.teamproject.meeting.enums.meeting.MeetingState;
@@ -18,6 +19,7 @@ public class MeetingListService {
 		this.meetingRepositoryPort = meetingRepositoryPort;
 	}
 	
+	@Transactional(readOnly = true)
 	public List<MeetingListDto> getMeetings(
 			Long userId,
 			MeetingState state,

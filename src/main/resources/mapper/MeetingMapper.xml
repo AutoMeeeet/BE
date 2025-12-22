@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.teamproject.meeting.mapper.MeetingMapper">
-    <select id="findMyUpcomingMeetings" resultType="com.teamproject.meeting.dto.MeetingList">
+    <select id="getMeetings" resultType="com.teamproject.meeting.dto.meeting.MeetingListDto">
     	SELECT
         	m.meeting_id,
         	m.title,
@@ -13,7 +13,7 @@
         	m.location_type,
         	m.meeting_state,
         	m.location,        
-        	COUNT(p_all.participant_id) AS participantCount
+        	COUNT(p_all.meeting_participant_id) AS participantCount
     
     	FROM MEETING m
 
@@ -26,10 +26,10 @@
 
     	<where>
     	    <choose>
-    			<when test="timeType == 'UPCOMING'">
+    			<when test="timeType.name() == 'UPCOMING'">
     				m.end_time > NOW()
     			</when>
-    			<when test="timeType == 'PAST'">
+    			<when test="timeType.name() == 'PAST'">
     				<![CDATA[
     					m.end_time <= NOW()
     				]]>

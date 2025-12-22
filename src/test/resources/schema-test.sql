@@ -61,3 +61,33 @@ CREATE TABLE IF NOT EXISTS MINUTES (
   minutes_url VARCHAR(2048) NOT NULL,
   FOREIGN KEY (meeting_id) REFERENCES MEETING(meeting_id)
 );
+
+-- 사용자
+INSERT INTO USERS
+(user_id, email, password, nickname, provider, role)
+VALUES
+(1, 'test@test.com', 'pw', 'tester', 'LOCAL', 'USER'),
+(2, 'test2@test.com', 'pw', 'tester2', 'LOCAL', 'USER');
+
+-- UPCOMING + CONFIRMED 미팅
+INSERT INTO MEETING
+(meeting_id, title, start_time, end_time, meeting_state, location_type, location, meeting_url, capacity)
+VALUES
+(1, '확정된 미래 회의',
+ NOW(), DATEADD('HOUR', 2, NOW()),
+ 'CONFIRMED', 'ONLINE', '비대면', 'url', 10);
+
+-- 종료된 미팅
+INSERT INTO MEETING
+VALUES
+(2, '종료된 회의',
+ DATEADD('DAY', -2, NOW()), DATEADD('DAY', -1, NOW()),
+ 'FINISHED', 'OFFLINE', '서울', 'url', 5);
+
+-- 참가자
+INSERT INTO MEETING_PARTICIPANT
+(meeting_participant_id, meeting_id, user_id, role, email_notification, permission, timetable_case, vote_case)
+VALUES
+(1, 1, 1, 'MEMBER', true, 'WRITE', false, false),
+(2, 1, 2, 'MEMBER', true, 'WRITE', false, false),
+(3, 2, 1, 'MEMBER', true, 'WRITE', false, false);

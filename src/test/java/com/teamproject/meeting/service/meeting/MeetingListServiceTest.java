@@ -5,7 +5,6 @@ import com.teamproject.meeting.enums.meeting.MeetingState;
 import com.teamproject.meeting.enums.meeting.MeetingTimeType;
 import com.teamproject.meeting.port.MeetingRepositoryPort;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,13 +16,12 @@ import static org.mockito.Mockito.*;
 
 class MeetingListServiceTest {
 
-    private MeetingRepositoryPort meetingRepositoryPort;
-    private MeetingListService meetingListService;
+    private final MeetingRepositoryPort meetingRepositoryPort;
+    private final MeetingListService meetingListService;
 
-    @BeforeEach
-    void setUp() {
-        meetingRepositoryPort = mock(MeetingRepositoryPort.class);
-        meetingListService = new MeetingListService(meetingRepositoryPort);
+    MeetingListServiceTest() {
+        this.meetingRepositoryPort = mock(MeetingRepositoryPort.class);
+        this.meetingListService = new MeetingListService(meetingRepositoryPort);
     }
 
     @Test

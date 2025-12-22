@@ -9,7 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.teamproject.meeting.entity.Users;
-import com.teamproject.meeting.enums.users.Role;
+import com.teamproject.meeting.infrastructure.security.local.CustomUserDetails;
+import com.teamproject.meeting.port.UsersRepositoryPort;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -21,9 +22,11 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
+    private final UsersRepositoryPort usersRepositoryPort;
 
-    public JWTFilter(JWTUtil jwtUtil) {
+    public JWTFilter(JWTUtil jwtUtil, UsersRepositoryPort usersRepositoryPort) {
         this.jwtUtil = jwtUtil;
+        this.usersRepositoryPort = usersRepositoryPort;
     }
 
     @Override
@@ -89,11 +92,8 @@ public class JWTFilter extends OncePerRequestFilter {
     	
     private void authenticateWithToken(String token) {
         String email = jwtUtil.getEmail(token);
-        String role = jwtUtil.getRole(token);
-
-        Users user = new Users();
-        user.setEmail(email);
-        user.setRole(Role.valueOf(role));
+        
+        Users user = usersRepositoryPort.findByEmail(email);
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
 

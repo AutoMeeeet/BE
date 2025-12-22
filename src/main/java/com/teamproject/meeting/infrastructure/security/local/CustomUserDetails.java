@@ -1,4 +1,4 @@
-package com.teamproject.meeting.infrastructure.security.common;
+package com.teamproject.meeting.infrastructure.security.local;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.teamproject.meeting.entity.Users;
+import com.teamproject.meeting.enums.users.Provider;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -21,6 +22,13 @@ public class CustomUserDetails implements UserDetails {
     	return users.getUserId();
     }
 
+    public String getNickname() {
+    	return users.getNickname();
+    }
+    
+    public Provider getProvider() {
+    	return users.getProvider();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

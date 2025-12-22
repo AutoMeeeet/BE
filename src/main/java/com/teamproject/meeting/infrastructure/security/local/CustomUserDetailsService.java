@@ -1,4 +1,4 @@
-package com.teamproject.meeting.infrastructure.security.common;
+package com.teamproject.meeting.infrastructure.security.local;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

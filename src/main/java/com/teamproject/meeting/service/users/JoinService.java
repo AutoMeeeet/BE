@@ -2,6 +2,7 @@ package com.teamproject.meeting.service.users;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.teamproject.meeting.dto.users.JoinDto;
 import com.teamproject.meeting.entity.Users;
@@ -20,6 +21,7 @@ public class JoinService {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 	
+	@Transactional
 	public void joinProcess(JoinDto joinDto) {
 		
 		String email = joinDto.getEmail();

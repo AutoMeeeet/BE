@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.teamproject.meeting.dto.meeting.MeetingListDto;
 import com.teamproject.meeting.enums.meeting.MeetingState;
 import com.teamproject.meeting.enums.meeting.MeetingTimeType;
-import com.teamproject.meeting.infrastructure.security.common.CustomUserDetails;
+import com.teamproject.meeting.infrastructure.security.local.CustomUserDetails;
 import com.teamproject.meeting.service.meeting.MeetingListService;
 
 @RestController

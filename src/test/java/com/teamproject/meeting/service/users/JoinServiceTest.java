@@ -5,7 +5,6 @@ import com.teamproject.meeting.entity.Users;
 import com.teamproject.meeting.enums.users.Provider;
 import com.teamproject.meeting.enums.users.Role;
 import com.teamproject.meeting.port.UsersRepositoryPort;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,15 +14,14 @@ import static org.mockito.Mockito.*;
 
 class JoinServiceTest {
 
-    private UsersRepositoryPort usersRepositoryPort;
-    private BCryptPasswordEncoder passwordEncoder;
-    private JoinService joinService;
+    private final UsersRepositoryPort usersRepositoryPort;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final JoinService joinService;
 
-    @BeforeEach
-    void setUp() {
-        usersRepositoryPort = mock(UsersRepositoryPort.class);
-        passwordEncoder = new BCryptPasswordEncoder();
-        joinService = new JoinService(usersRepositoryPort, passwordEncoder);
+    JoinServiceTest() {
+        this.usersRepositoryPort = mock(UsersRepositoryPort.class);
+        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.joinService = new JoinService(usersRepositoryPort, passwordEncoder);
     }
 
     @Test

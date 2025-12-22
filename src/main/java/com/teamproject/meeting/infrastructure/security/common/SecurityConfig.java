@@ -21,6 +21,7 @@ import com.teamproject.meeting.infrastructure.redis.RedisUtil;
 import com.teamproject.meeting.infrastructure.security.local.LoginFilter;
 import com.teamproject.meeting.infrastructure.security.oauth.CustomOAuth2UserService;
 import com.teamproject.meeting.infrastructure.security.oauth.CustomSuccessHandler;
+import com.teamproject.meeting.port.UsersRepositoryPort;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -33,13 +34,15 @@ public class SecurityConfig {
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final CustomSuccessHandler customSuccessHandler;
 	private final RedisUtil redisUtil;
+	private final UsersRepositoryPort usersRepositoryPort;
 	
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, RedisUtil redisUtil) {
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, RedisUtil redisUtil, UsersRepositoryPort usersRepositoryPort) {
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
         this.customOAuth2UserService = customOAuth2UserService;
         this.customSuccessHandler = customSuccessHandler;
         this.redisUtil = redisUtil;
+        this.usersRepositoryPort = usersRepositoryPort;
     }
 	
 	@Bean
@@ -105,7 +108,7 @@ public class SecurityConfig {
 
 		// JWTFilter
 		http
-        	.addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+        	.addFilterAfter(new JWTFilter(jwtUtil, usersRepositoryPort), OAuth2LoginAuthenticationFilter.class);
 		
 		// UsernamePasswordAuthenticationFilter
 		http
