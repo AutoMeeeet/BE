@@ -1,6 +1,5 @@
 package com.teamproject.meeting.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.teamproject.meeting.enums.meeting.LocationType;
@@ -21,4 +20,6 @@ public class Meeting {
     private String location; // 주소 or 비대면
     private String meetingUrl;
     private Integer capacity; // 정원
+    private String token;
+    private LocalDateTime inviteExpiresAt;
 }

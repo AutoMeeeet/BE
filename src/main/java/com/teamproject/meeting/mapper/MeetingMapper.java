@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.teamproject.meeting.dto.meeting.MeetingListDto;
+import com.teamproject.meeting.entity.Meeting;
 import com.teamproject.meeting.enums.meeting.MeetingState;
 import com.teamproject.meeting.enums.meeting.MeetingTimeType;
 
@@ -17,4 +18,6 @@ public interface MeetingMapper {
         @Param("state") MeetingState state,
         @Param("timeType") MeetingTimeType timeType
     );
+    
+    void createMeeting(Meeting meeting);
 }

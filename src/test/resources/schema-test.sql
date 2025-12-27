@@ -12,14 +12,16 @@ CREATE TABLE IF NOT EXISTS USERS (
 -- MEETING 테이블
 CREATE TABLE IF NOT EXISTS MEETING (
   meeting_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(225) NOT NULL,
+  title VARCHAR(255) NOT NULL,
   start_time TIMESTAMP,
   end_time TIMESTAMP,
   meeting_state VARCHAR(20) NOT NULL,
   location_type VARCHAR(20) NOT NULL,
   location VARCHAR(255) NOT NULL,
   meeting_url VARCHAR(2048) NOT NULL,
-  capacity INT NOT NULL
+  capacity INT NOT NULL,
+  token VARCHAR(255) NOT NULL,
+  invite_expiresAt TIMESTAMP NOT NULL
 );
 
 -- MEETING_PARTICIPANT 테이블
@@ -69,20 +71,23 @@ VALUES
 (1, 'test@test.com', 'pw', 'tester', 'LOCAL', 'USER'),
 (2, 'test2@test.com', 'pw', 'tester2', 'LOCAL', 'USER');
 
--- UPCOMING + CONFIRMED 미팅
+-- 1. 확정된 미래 회의 (meeting_id 1) 수정
 INSERT INTO MEETING
-(meeting_id, title, start_time, end_time, meeting_state, location_type, location, meeting_url, capacity)
+(meeting_id, title, start_time, end_time, meeting_state, location_type, location, meeting_url, capacity, token, invite_expiresAt)
 VALUES
 (1, '확정된 미래 회의',
  NOW(), DATEADD('HOUR', 2, NOW()),
- 'CONFIRMED', 'ONLINE', '비대면', 'url', 10);
+ 'CONFIRMED', 'ONLINE', '비대면', 'url', 10, 
+ 'test-token-1', DATEADD('DAY', 7, NOW())); -- token과 만료시간 추가
 
--- 종료된 미팅
+-- 2. 종료된 미팅 (meeting_id 2) 수정
 INSERT INTO MEETING
+(meeting_id, title, start_time, end_time, meeting_state, location_type, location, meeting_url, capacity, token, invite_expiresAt)
 VALUES
 (2, '종료된 회의',
  DATEADD('DAY', -2, NOW()), DATEADD('DAY', -1, NOW()),
- 'FINISHED', 'OFFLINE', '서울', 'url', 5);
+ 'FINISHED', 'OFFLINE', '서울', 'url', 5, 
+ 'test-token-2', DATEADD('DAY', 7, NOW())); -- 모든 필드 명시 권장
 
 -- 참가자
 INSERT INTO MEETING_PARTICIPANT

@@ -4,5 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.teamproject.meeting.mapper.Minutes">
-    <!-- 여기에 SQL 매핑 작성 -->
+    <insert id ="createMeeting" useGeneratedKeys="true" keyProperty="minutesId">
+    	INSERT INTO MINUTES (meetingId, minutesUrl)
+    	VALUES (#{meetingId}, #{minutesUrl})
+    </insert>
 </mapper>

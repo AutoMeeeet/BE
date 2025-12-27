@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `USERS` (
 -- MEETING 테이블
 CREATE TABLE IF NOT EXISTS `MEETING` (
   `meeting_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(225) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
   `start_time` DATETIME NULL,
   `end_time` DATETIME NULL,
   `meeting_state` ENUM('CONFIRMED', 'PENDING', 'FINISHED') NOT NULL,
@@ -21,6 +21,8 @@ CREATE TABLE IF NOT EXISTS `MEETING` (
   `location` VARCHAR(255) NOT NULL,
   `meeting_url` VARCHAR(2048) NOT NULL,
   `capacity` INT NOT NULL,
+  `token` VARCHAR(255) NOT NULL,
+  `invite_expiresAt` DATETIME NOT NULL,
   PRIMARY KEY (`meeting_id`)
 );
 

@@ -44,4 +44,9 @@
     	GROUP BY m.meeting_id
     	ORDER BY m.start_time ASC
     </select>
+    
+    <insert id="createMeeting" useGeneratedKeys="true" keyProperty="meetingId">
+    	INSERT INTO MEETING (title, start_time, location, location_type, capacity, token, meeting_state, invite_expiresAt, meeting_url)
+    	VALUES (#{title}, #{startTime}, #{location}, #{locationType}, #{capacity}, #{token}, #{meetingState}, #{inviteExpiresAt}, #{meetingUrl})
+    </insert>
 </mapper>
