@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.teamproject.meeting.mapper.MeetingMapper">
-    <select id="getMeetings" resultType="com.teamproject.meeting.dto.meeting.MeetingListDto">
+    <select id="getMeetings" resultType="com.teamproject.meeting.dto.meeting.MeetingListReqDto">
     	SELECT
         	m.meeting_id,
         	m.title,
@@ -25,17 +25,6 @@
         	ON m.meeting_id = p_all.meeting_id
 
     	<where>
-    	    <choose>
-    			<when test="timeType.name() == 'UPCOMING'">
-    				m.end_time > NOW()
-    			</when>
-    			<when test="timeType.name() == 'PAST'">
-    				<![CDATA[
-    					m.end_time <= NOW()
-    				]]>
-    			</when>
-    		</choose>
-    		
     		<if test="state != null">
     			AND m.meeting_state = #{state}
     		</if>

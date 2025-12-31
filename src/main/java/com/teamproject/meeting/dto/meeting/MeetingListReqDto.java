@@ -6,9 +6,11 @@ import com.teamproject.meeting.enums.meeting.LocationType;
 import com.teamproject.meeting.enums.meeting.MeetingState;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-public class MeetingListDto {
+@Setter
+public class MeetingListReqDto {
 	private String title;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
