@@ -4,6 +4,8 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+
+
 @Component
 public class RedisUtil {
 
@@ -38,4 +40,24 @@ public class RedisUtil {
     public boolean hasRefreshToken(String email, String uuid) {
         return Boolean.TRUE.equals(redisTemplate.hasKey(createRefreshKey(email, uuid)));
     }
+
+    private String createInviteKey(String token){
+        return "RT:" + token;   // 초대링크 토큰 생성
+    }
+
+    public void saveInviteToken(String token, Long meetingId, long duration) {
+          String key = createInviteKey(token);
+             redisTemplate.opsForValue().set(key,String.valueOf(meetingId),duration); //토큰  저장
+    }
+    public Long     getMeetingIdByToken(String token) {
+        String key = createInviteKey(token);
+        String value = redisTemplate.opsForValue().get(key);
+
+        if (value == null) {
+            return null; // 토큰이 없거나 만료됨
+        }
+        return Long.parseLong(value);
+    }
+
+
 }

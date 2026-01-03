@@ -10,4 +10,5 @@ public interface MinutesMapper {
 		@Param("meetingId") Long meetingId,
 		@Param("minutesUrl") String minutesUrl
 	);
+
 }

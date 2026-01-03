@@ -3,6 +3,7 @@ package com.teamproject.meeting.controller.meeting;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,4 +34,16 @@ public class MeetingController {
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(new UrlResponse("Meeting 생성 성공", "/meetings/" + token));
 	}
+
+
+
+    @PostMapping("/meetings/{token}/join")
+    public ResponseEntity<UrlResponse> joinMeeting(
+            @AuthenticationPrincipal CustomUserDetails user,
+            @PathVariable("token") String token
+    ){
+        Long meetingId = meetingService.joinMeeting(user.getUserId(), token);
+        return ResponseEntity.ok(new UrlResponse("회의 참여 성공", meetingId.toString()));
+    }
+
 }

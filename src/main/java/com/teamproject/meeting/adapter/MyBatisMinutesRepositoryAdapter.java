@@ -18,4 +18,6 @@ public class MyBatisMinutesRepositoryAdapter implements MinutesRepositoryPort{
 	public void createMeeting(Long meetingId, String minutesUrl) {
 		minutesMapper.createMeeting(meetingId, minutesUrl);
 	}
+
+
 }
