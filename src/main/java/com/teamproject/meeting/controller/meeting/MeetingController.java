@@ -6,10 +6,7 @@ import com.teamproject.meeting.service.meeting.MeetingListService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.teamproject.meeting.dto.meeting.CreateMeetingDto;
 import com.teamproject.meeting.infrastructure.common.UrlResponse;
@@ -49,5 +46,13 @@ public class MeetingController {
     ) {
 
         return meetingListService.getMeetings(user.getUserId(), state);
+    }
+
+    // [추가] 초대 코드로 입장 API
+    @PostMapping("/meetings/{token}/join")
+    public ResponseEntity<String> joinMeeting(@AuthenticationPrincipal CustomUserDetails user,
+                                              @PathVariable("token") String token) {
+        Long meetingId = meetingService.joinMeeting(user.getUserId(), token);
+        return ResponseEntity.ok("회의 참여 성공 (Meeting ID: " + meetingId + ")");
     }
 }

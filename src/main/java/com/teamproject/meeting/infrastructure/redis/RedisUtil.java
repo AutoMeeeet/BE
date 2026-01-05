@@ -38,4 +38,14 @@ public class RedisUtil {
     public boolean hasRefreshToken(String email, String uuid) {
         return Boolean.TRUE.equals(redisTemplate.hasKey(createRefreshKey(email, uuid)));
     }
+    public void saveInvitationCode(String token, Long meetingId, long duration) {
+        String key = "INVITE:" + token;
+        redisTemplate.opsForValue().set(key, String.valueOf(meetingId), duration, TimeUnit.MILLISECONDS);
+    }
+
+    public Long getMeetingIdByToken(String token) {
+        String key = "INVITE:" + token;
+        String value = redisTemplate.opsForValue().get(key);
+        return value != null ? Long.parseLong(value) : null;
+    }
 }
