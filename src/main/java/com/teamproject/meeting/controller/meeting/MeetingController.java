@@ -50,9 +50,9 @@ public class MeetingController {
 
     // [추가] 초대 코드로 입장 API
     @PostMapping("/meetings/{token}/join")
-    public ResponseEntity<String> joinMeeting(@AuthenticationPrincipal CustomUserDetails user,
+    public ResponseEntity<UrlResponse> joinMeeting(@AuthenticationPrincipal CustomUserDetails user,
                                               @PathVariable("token") String token) {
         Long meetingId = meetingService.joinMeeting(user.getUserId(), token);
-        return ResponseEntity.ok("회의 참여 성공 (Meeting ID: " + meetingId + ")");
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UrlResponse("초대코드 생성 ", "/meetings/" + meetingId));
     }
 }
