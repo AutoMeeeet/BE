@@ -3,6 +3,7 @@ package com.teamproject.meeting.service.meeting;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.teamproject.meeting.infrastructure.redis.RedisUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,16 +24,18 @@ public class MeetingService {
 	private final MeetingParticipantRepositoryPort meetingParticipantRepositoryPort;
 	private final MeetingReferenceRepositoryPort meetingReferenceRepositoryPort;
 	private final MinutesRepositoryPort minutesRepositoryPort;
-	
-	public MeetingService(MeetingRepositoryPort meetingRepositoryPort, MeetingParticipantRepositoryPort meetingParticipantRepositoryPort, MeetingReferenceRepositoryPort meetingReferenceRepositoryPort, MinutesRepositoryPort minutesRepositoryPort) {
+	private final RedisUtil redisUtil;
+	public MeetingService(MeetingRepositoryPort meetingRepositoryPort, MeetingParticipantRepositoryPort meetingParticipantRepositoryPort, MeetingReferenceRepositoryPort meetingReferenceRepositoryPort, MinutesRepositoryPort minutesRepositoryPort, RedisUtil redisUtil) {
 		this.meetingRepositoryPort = meetingRepositoryPort;
 		this.meetingParticipantRepositoryPort = meetingParticipantRepositoryPort;
 		this.meetingReferenceRepositoryPort = meetingReferenceRepositoryPort;
 		this.minutesRepositoryPort = minutesRepositoryPort;
-	}
+        this.redisUtil = redisUtil;
+    }
 	
 	@Transactional
 	public String createMeeting(Long userId, CreateMeetingDto dto) {
+        String token = UUID.randomUUID().toString();
 		Meeting meeting = new Meeting();
 	    meeting.setTitle(dto.getTitle());
 	    meeting.setStartTime(dto.getStartTime());
@@ -40,17 +43,29 @@ public class MeetingService {
 	    meeting.setLocationType(dto.getLocationType());
 	    meeting.setCapacity(dto.getCapacity());
 	    meeting.setMeetingState(MeetingState.PENDING);
-	    meeting.setToken(UUID.randomUUID().toString());
+	    meeting.setToken(token);
 	    meeting.setInviteExpiresAt(LocalDateTime.now().plusDays(7));
 	    
 	    meetingRepositoryPort.createMeeting(meeting);
 	    
 	    Long meetingId = meeting.getMeetingId();
-	    
+        redisUtil.saveInvitationCode(token, meetingId, 7L * 24 * 60 * 60 * 1000);
 		meetingParticipantRepositoryPort.createMeeting(meetingId, userId, dto.getEmailNotification(), Role.ORGANIZER, Permission.AUTHORIZATION, false, false);
 		meetingReferenceRepositoryPort.createMeeting(meetingId, dto.getReferenceUrl());
 		minutesRepositoryPort.createMeeting(meetingId, dto.getMinutesUrl());
 		
 		return meeting.getToken();
 	}
+
+    @Transactional
+    public Long joinMeeting(Long userId, String token) {
+        Long meetingId = redisUtil.getMeetingIdByToken(token);
+        if (meetingId == null) {
+            throw new IllegalArgumentException("유효하지 않거나 만료된 초대 코드입니다.");
+        }
+
+        // 참여자 등록 (기본값: PARTICIPANT / READ_ONLY)
+        meetingParticipantRepositoryPort.createMeeting(meetingId, userId, true, Role.PARTICIPANT, Permission.WRITE, false, false);
+        return meetingId;
+    }
 }
