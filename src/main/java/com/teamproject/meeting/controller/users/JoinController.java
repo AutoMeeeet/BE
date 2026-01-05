@@ -11,6 +11,7 @@ import com.teamproject.meeting.infrastructure.common.CommonResponse;
 import com.teamproject.meeting.service.users.JoinService;
 
 @RestController
+
 public class JoinController {
 
 	private final JoinService joinService;

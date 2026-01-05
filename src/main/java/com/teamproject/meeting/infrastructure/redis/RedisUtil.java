@@ -49,7 +49,7 @@ public class RedisUtil {
           String key = createInviteKey(token);
              redisTemplate.opsForValue().set(key,String.valueOf(meetingId),duration); //토큰  저장
     }
-    public Long     getMeetingIdByToken(String token) {
+    public Long   getMeetingIdByToken(String token) {
         String key = createInviteKey(token);
         String value = redisTemplate.opsForValue().get(key);
 
