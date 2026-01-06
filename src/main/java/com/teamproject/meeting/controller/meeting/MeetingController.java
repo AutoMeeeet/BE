@@ -22,10 +22,10 @@ import java.util.List;
 public class MeetingController {
 
 	private final MeetingService meetingService;
-    private final MeetingListService meetingListService;
-	public MeetingController(MeetingService meetingService, MeetingListService meetingListService) {
+
+	public MeetingController(MeetingService meetingService) {
 		this.meetingService = meetingService;
-        this.meetingListService = meetingListService;
+
     }
 	
 	// Meeting 생성
@@ -45,7 +45,7 @@ public class MeetingController {
             @RequestParam(required = false) MeetingState state
     ) {
 
-        return meetingListService.getMeetings(user.getUserId(), state);
+        return meetingService.getMeetings(user.getUserId(), state);
     }
 
     // [추가] 초대 코드로 입장 API

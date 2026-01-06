@@ -10,6 +10,7 @@ import com.teamproject.meeting.infrastructure.security.local.CustomUserDetails;
 import com.teamproject.meeting.service.users.JoinService;
 import com.teamproject.meeting.service.users.NickNameService;
 import com.teamproject.meeting.service.users.PWService;
+import com.teamproject.meeting.service.users.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,32 +21,29 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
-    private final NickNameService nickNameService;
-    private final PWService pwService;
-    private final JoinService joinService;
 
-    public UserController(NickNameService nickNameService, PWService pwService, JoinService joinService) {
-        this.nickNameService = nickNameService;
-        this.pwService = pwService;
-        this.joinService = joinService;
+    private final UserService userService;
+    public UserController( UserService userService) {
+
+        this.userService = userService;
     }
 
     @PutMapping("/nickname")
     public ResponseEntity<CommonResponse> changeNickname(@AuthenticationPrincipal CustomUserDetails principal, @Valid @RequestBody NickNameDto dto) {
-        nickNameService.changeNickname(dto.getNickname(), principal.getUserId());
+        userService.changeNickname(dto.getNickname(), principal.getUserId());
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResponse("이름 변경 성공"));
     }
 
     @PutMapping("/password")
     public ResponseEntity<CommonResponse> changePW(@AuthenticationPrincipal CustomUserDetails principal, @Valid @RequestBody PWDto dto) {
-        pwService.changePW(principal.getUserId(), dto.getCurrentPW(), dto.getNewPW());
+      userService.changePW(principal.getUserId(), dto.getCurrentPW(), dto.getNewPW());
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResponse("PW 변경 성공"));
     }
 
     @PostMapping("/join")
     public ResponseEntity<CommonResponse> joinProcess(@RequestBody JoinDto joinDto) {
 
-        joinService.joinProcess(joinDto);
+        userService.joinProcess(joinDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new CommonResponse("회원가입 성공"));
     }

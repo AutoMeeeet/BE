@@ -1,8 +1,15 @@
 package com.teamproject.meeting.service.meeting;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import com.teamproject.meeting.dto.meeting.MeetingListReqDto;
+import com.teamproject.meeting.dto.meeting.MeetingListResDto;
 import com.teamproject.meeting.infrastructure.redis.RedisUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,5 +74,28 @@ public class MeetingService {
         // 참여자 등록 (기본값: PARTICIPANT / READ_ONLY)
         meetingParticipantRepositoryPort.createMeeting(meetingId, userId, true, Role.PARTICIPANT, Permission.WRITE, false, false);
         return meetingId;
+    }
+
+    @Transactional(readOnly = true)
+    public List<MeetingListResDto> getMeetings(
+            Long userId,
+            MeetingState state
+    ) {
+        if (state == null) {
+            state = MeetingState.CONFIRMED;
+        }
+
+        List<MeetingListReqDto> flatMeetings = meetingRepositoryPort.getMeetings(userId, state);
+
+        Map<LocalDate, List<MeetingListReqDto>> groupedMap = flatMeetings.stream()
+                .collect(Collectors.groupingBy(
+                        meeting -> meeting.getStartTime().toLocalDate(),
+                        LinkedHashMap::new,
+                        Collectors.toList()
+                ));
+
+        return groupedMap.entrySet().stream()
+                .map(entry -> new MeetingListResDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 }
