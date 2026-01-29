@@ -2,7 +2,6 @@ package com.teamproject.meeting.controller.meeting;
 
 import com.teamproject.meeting.dto.meeting.MeetingListResDto;
 import com.teamproject.meeting.enums.meeting.MeetingState;
-import com.teamproject.meeting.service.meeting.MeetingListService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
