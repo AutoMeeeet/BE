@@ -16,12 +16,13 @@ class JoinServiceTest {
 
     private final UsersRepositoryPort usersRepositoryPort;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final JoinService joinService;
+   private final UserService userService;
 
-    JoinServiceTest() {
+    JoinServiceTest(UserService userService) {
+        this.userService = userService;
         this.usersRepositoryPort = mock(UsersRepositoryPort.class);
         this.passwordEncoder = new BCryptPasswordEncoder();
-        this.joinService = new JoinService(usersRepositoryPort, passwordEncoder);
+
     }
 
     @Test
@@ -33,7 +34,7 @@ class JoinServiceTest {
 
         // when & then
         IllegalArgumentException exception =
-                assertThrows(IllegalArgumentException.class, () -> joinService.joinProcess(dto));
+                assertThrows(IllegalArgumentException.class, () -> userService.joinProcess(dto));
 
         assertEquals("이미 가입된 이메일입니다.", exception.getMessage());
     }
@@ -46,7 +47,7 @@ class JoinServiceTest {
         when(usersRepositoryPort.existsByEmail("test@test.com")).thenReturn(false);
 
         // when
-        joinService.joinProcess(dto);
+
 
         // then: 저장되는 User 객체를 캡쳐해서 확인
         ArgumentCaptor<Users> captor = ArgumentCaptor.forClass(Users.class);

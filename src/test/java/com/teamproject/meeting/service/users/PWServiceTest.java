@@ -13,12 +13,13 @@ class PWServiceTest {
 
     private final UsersRepositoryPort usersRepositoryPort;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final PWService pwService;
+    private final UserService userService;
 
-    PWServiceTest() {
+    PWServiceTest(UserService userService) {
+        this.userService = userService;
         this.usersRepositoryPort = mock(UsersRepositoryPort.class);
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        this.pwService = new PWService(usersRepositoryPort, bCryptPasswordEncoder);
+
     }
 
     @Test
@@ -34,7 +35,7 @@ class PWServiceTest {
         // when & then
         IllegalArgumentException exception =
                 assertThrows(IllegalArgumentException.class,
-                        () -> pwService.changePW(userId, currentPW, "newPW"));
+                        () -> userService.changePW(userId, currentPW, "newPW"));
 
         assertEquals("현재 비밀번호 불일치", exception.getMessage());
 
