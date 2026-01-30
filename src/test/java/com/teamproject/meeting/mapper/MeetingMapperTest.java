@@ -28,16 +28,17 @@ class MeetingMapperTest {
     @DisplayName("회의 정보를 저장하면 DB에서 생성된 자동 증가 ID가 객체에 채워져야 한다")
     void createMeeting_ShouldPopulateId() {
         // given: 테스트용 Meeting 객체 생성
-        Meeting meeting = new Meeting();
-        meeting.setTitle("MyBatis 테스트 회의");
-        meeting.setStartTime(LocalDateTime.now());
-        meeting.setLocationType(LocationType.ONLINE);
-        meeting.setLocation("줌 링크");
-        meeting.setCapacity(5);
-        meeting.setToken(UUID.randomUUID().toString());
-        meeting.setInviteExpiresAt(LocalDateTime.now().plusDays(7));
-        meeting.setMeetingState(MeetingState.PENDING);
-        meeting.setMeetingUrl("https://zoom.us/test-link");
+    	Meeting meeting = Meeting.builder()
+    	        .title("MyBatis 테스트 회의")
+    	        .startTime(LocalDateTime.now())
+    	        .locationType(LocationType.ONLINE)
+    	        .location("줌 링크")
+    	        .capacity(5)
+    	        .token(UUID.randomUUID().toString())
+    	        .inviteExpiresAt(LocalDateTime.now().plusDays(7))
+    	        .meetingState(MeetingState.PENDING)
+    	        .meetingUrl("https://zoom.us/test-link")
+    	        .build();
         
         // when: 매퍼 호출 (DB에 INSERT 실행)
         meetingMapper.createMeeting(meeting);

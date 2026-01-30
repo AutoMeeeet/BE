@@ -54,7 +54,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addCookie(createCookie("refresh", refreshToken, uuid));
 
         // 로그인 성공 후 리다이렉트
-        response.sendRedirect("http://localhost:3000/");
+        String redirectUrl = "http://localhost:3000/login-success?access=" + accessToken;
+        response.sendRedirect(redirectUrl);
     }
 
     private Cookie createCookie(String key, String value, String uuid) {

@@ -27,12 +27,13 @@ class MyBatisUserRepositoryAdapterTest {
     @Test
     void existsByEmail_저장된이메일이면_true반환() {
         // given
-        Users user = new Users();
-        user.setEmail("test@test.com");
-        user.setPassword("1234");
-        user.setNickname("홍길동");
-        user.setProvider(Provider.LOCAL);
-        user.setRole(Role.USERS);
+    	Users user = Users.builder()
+                .email("test@test.com")
+                .password("1234")
+                .nickname("홍길동")
+                .provider(Provider.LOCAL)
+                .role(Role.USERS)
+                .build();
 
         usersRepositoryPort.saveUsers(user);
 
@@ -46,12 +47,13 @@ class MyBatisUserRepositoryAdapterTest {
     @Test
     void findByEmail_저장된유저를_정상조회한다() {
         // given
-        Users user = new Users();
-        user.setEmail("bbb@test.com");
-        user.setPassword("9999");
-        user.setNickname("철수");
-        user.setProvider(Provider.GOOGLE);
-        user.setRole(Role.USERS);
+    	Users user = Users.builder()
+                .email("bbb@test.com")
+                .password("9999")
+                .nickname("철수")
+                .provider(Provider.GOOGLE)
+                .role(Role.USERS)
+                .build();
 
         usersRepositoryPort.saveUsers(user);
 
@@ -82,12 +84,13 @@ class MyBatisUserRepositoryAdapterTest {
     @Test
     void changePW_비밀번호가_정상적으로_변경된다() {
 
-        Users user = new Users();
-        user.setEmail("change@test.com");
-        user.setPassword("oldPassword");
-        user.setNickname("테스터2");
-        user.setProvider(Provider.LOCAL);
-        user.setRole(Role.USERS);
+    	Users user = Users.builder()
+                .email("change@test.com")
+                .password("oldPassword")
+                .nickname("테스터2")
+                .provider(Provider.LOCAL)
+                .role(Role.USERS)
+                .build();
         
         usersRepositoryPort.saveUsers(user);
         

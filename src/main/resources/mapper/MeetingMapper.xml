@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.teamproject.meeting.mapper.MeetingMapper">
-    <select id="getMeetings" resultType="com.teamproject.meeting.dto.meeting.MeetingListReqDto">
+    <select id="getMeetings" resultType="com.teamproject.meeting.dto.meeting.MeetingListReqDBDto">
     	SELECT
         	m.meeting_id,
         	m.title,
@@ -38,4 +38,34 @@
     	INSERT INTO MEETING (title, start_time, location, location_type, capacity, token, meeting_state, invite_expiresAt, meeting_url)
     	VALUES (#{title}, #{startTime}, #{location}, #{locationType}, #{capacity}, #{token}, #{meetingState}, #{inviteExpiresAt}, #{meetingUrl})
     </insert>
+    
+    <select id="selectMonthlySummaries" resultType="com.teamproject.meeting.dto.meeting.MainPageResDto$MonthlySummary">
+    	SELECT
+    		DATE(start_time) as date,
+    		COUNT(*) as count
+    	FROM meeting m
+    	JOIN meeting_participant mp ON m.meeting_id = mp.meeting_id
+    	WHERE mp.user_id = #{userId}
+    		AND m.start_time BETWEEN #{start} AND #{end}
+    	GROUP BY DATE(start_time) 
+    </select>
+    
+    <select id="selectMeetingDetailsByDate" resultType="com.teamproject.meeting.dto.meeting.MainPageResDto$MeetingDetail">
+	    SELECT
+	        m.meeting_id,
+	        m.title,
+	        m.start_time,
+	        m.end_time,
+	        m.location,
+	        m.capacity,
+	        m.meeting_state,
+	        COUNT(p.meeting_participant_id) as participantCount
+	    FROM meeting m
+	    JOIN meeting_participant mp ON m.meeting_id = mp.meeting_id
+	    LEFT JOIN meeting_participant p ON m.meeting_id = p.meeting_id
+	    WHERE mp.user_id = #{userId}
+	        AND m.start_time BETWEEN #{start} AND #{end}
+	    GROUP BY m.meeting_id
+	    ORDER BY m.start_time ASC
+	</select>
 </mapper>

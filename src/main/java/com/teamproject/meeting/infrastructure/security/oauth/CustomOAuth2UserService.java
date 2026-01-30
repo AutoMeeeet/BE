@@ -46,20 +46,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         
         if(existData == null) {
         	// 서버 DB 저장
-        	Users user = new Users();
-        	user.setEmail(email);
-        	user.setNickname(oAuth2Response.getName());
-        	user.setRole(Role.USERS);
-        	user.setProvider(Provider.valueOf(oAuth2Response.getProvider().toUpperCase()));
+        	Users user = Users.builder()
+                    .email(email)
+                    .nickname(oAuth2Response.getName())
+                    .role(Role.USERS)
+                    .provider(Provider.valueOf(oAuth2Response.getProvider().toUpperCase()))
+                    .build();
         	
         	usersRepositoryPort.saveUsers(user);
         }
         
         	// DTO로 Provider에게 던져주기
-        	OAuthJoinDto userDto = new OAuthJoinDto();
-        	userDto.setEmail(oAuth2Response.getEmail());
-        	userDto.setNickname(oAuth2Response.getName());
-        	userDto.setRole((Role.USERS).toString());
+	        OAuthJoinDto userDto = OAuthJoinDto.builder()
+	                .email(oAuth2Response.getEmail())
+	                .nickname(oAuth2Response.getName())
+	                .role(Role.USERS.toString())
+	                .build();
 
             return new CustomOAuth2User(userDto);
         

@@ -1,12 +1,13 @@
 package com.teamproject.meeting.dto.users;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
-public class NickNameDto {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class NickNameReqDto {
 	
 	@NotBlank
 	private String nickname;

@@ -15,7 +15,6 @@ import com.teamproject.meeting.port.UsersRepositoryPort;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -71,20 +70,11 @@ public class JWTFilter extends OncePerRequestFilter {
     
     private String extractToken(HttpServletRequest request) {
 
-        String token = request.getHeader("access");
-        if (token != null) {
-            return token;
-        }
+    	String authorization = request.getHeader("Authorization");
 
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("access".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-                if ("refresh".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
+    	if (authorization != null && authorization.startsWith("Bearer ")) {
+            // "Bearer " 뒷부분(실제 토큰)만 잘라서 반환
+            return authorization.split(" ")[1]; 
         }
 
         return null;

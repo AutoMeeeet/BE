@@ -5,11 +5,16 @@ import java.time.LocalDateTime;
 import com.teamproject.meeting.enums.meeting.LocationType;
 import com.teamproject.meeting.enums.meeting.MeetingState;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Meeting {
     private Long meetingId;
     private String title;

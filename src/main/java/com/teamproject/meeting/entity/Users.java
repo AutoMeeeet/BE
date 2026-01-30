@@ -3,11 +3,16 @@ package com.teamproject.meeting.entity;
 import com.teamproject.meeting.enums.users.Provider;
 import com.teamproject.meeting.enums.users.Role;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Users {
     private Long userId;
     private String email;
