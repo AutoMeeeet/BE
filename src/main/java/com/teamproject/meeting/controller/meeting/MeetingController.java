@@ -6,17 +6,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.teamproject.meeting.dto.meeting.MeetingListResDto;
 
 import com.teamproject.meeting.dto.meeting.AllReqDto;
 import com.teamproject.meeting.dto.meeting.CreateMeetingReqDto;
 import com.teamproject.meeting.dto.meeting.DailyReqDto;
 import com.teamproject.meeting.dto.meeting.MainPageResDto;
-import com.teamproject.meeting.dto.meeting.MeetingListResDto;
 import com.teamproject.meeting.dto.meeting.MonthReqDto;
+import com.teamproject.meeting.infrastructure.common.UrlResponse;
 import com.teamproject.meeting.infrastructure.security.local.CustomUserDetails;
 import com.teamproject.meeting.service.meeting.MeetingService;
 
@@ -28,10 +30,11 @@ import jakarta.validation.Valid;
 public class MeetingController {
 
 	private final MeetingService meetingService;
-	
+
 	public MeetingController(MeetingService meetingService) {
 		this.meetingService = meetingService;
-	}
+
+    }
 	
 	// Meeting 생성
 	@Operation(summary = "회의 생성")
@@ -70,4 +73,13 @@ public class MeetingController {
 		
 		return ResponseEntity.ok(meetingService.getMeetings(user.getUserId(), all));
 	}
+
+    // [추가] 초대 코드로 입장 API
+    @PostMapping("/{token}/join")
+    public ResponseEntity<UrlResponse> joinMeeting(
+    		@AuthenticationPrincipal CustomUserDetails user,
+            @PathVariable("token") String token) {
+        Long meetingId = meetingService.joinMeeting(user.getUserId(), token);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UrlResponse("초대코드 생성 ", "/meetings/" + meetingId));
+    }
 }
