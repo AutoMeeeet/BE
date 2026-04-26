@@ -8,4 +8,21 @@
     	INSERT INTO MINUTES (meetingId, minutesUrl)
     	VALUES (#{meetingId}, #{minutesUrl})
     </insert>
+    
+    <select id="findByMeetingId" resultType="com.teamproject.meeting.dto.meetingParticipant.MeetingDetailResDto$Minutes">
+    	SELECT minutes_id, minutes_url
+    	FROM minutes
+    	WHERE meeting_id = #{meetingId}
+	</select>
+	
+	<select id="findMeetingIdByMinutesId" resultType="long">
+		SELECT meeting_id
+		FROM minutes
+		WHERE minutes_id = #{minutesId}
+	</select>
+	
+	<delete id="deleteById">
+		DELETE FROM minutes
+		WHERE minutes_id = #{minutesId}
+	</delete>
 </mapper>

@@ -14,7 +14,9 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class MeetingListReqDBDto {
-
+	
+	private Long meetingId;
+	
 	private String title;
 
 	private LocalDateTime startTime;

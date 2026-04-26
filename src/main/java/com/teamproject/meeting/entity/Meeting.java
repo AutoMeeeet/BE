@@ -27,4 +27,5 @@ public class Meeting {
     private Integer capacity; // 정원
     private String token;
     private LocalDateTime inviteExpiresAt;
+    private Integer meetingStatus;
 }

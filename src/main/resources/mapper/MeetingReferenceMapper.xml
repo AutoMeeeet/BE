@@ -8,4 +8,21 @@
     	INSERT INTO MEETINGREFERENCE (meetingId, referenceUrl)
     	VALUES (#{meetingId}, #{referenceUrl})
     </insert>
+    
+    <select id="findByMeetingId" resultType="com.teamproject.meeting.dto.meetingParticipant.MeetingDetailResDto$Reference">
+    	SELECT reference_id, reference_url
+    	FROM meeting_reference
+    	WHERE meeting_id = #{meetingId}
+	</select>
+	
+	<select id="findMeetingIdByReferenceId" resultType="long">
+		SELECT meeting_id
+		FROM meeting_reference
+		WHERE reference_id = #{referenceId}
+	</select>
+	
+	<delete id="deleteById">
+		DELETE FROM meeting_reference
+		WHERE reference_id = #{referenceId}
+	</delete>
 </mapper>

@@ -35,8 +35,8 @@
     </select>
     
     <insert id="createMeeting" useGeneratedKeys="true" keyProperty="meetingId">
-    	INSERT INTO MEETING (title, start_time, location, location_type, capacity, token, meeting_state, invite_expiresAt, meeting_url)
-    	VALUES (#{title}, #{startTime}, #{location}, #{locationType}, #{capacity}, #{token}, #{meetingState}, #{inviteExpiresAt}, #{meetingUrl})
+    	INSERT INTO MEETING (title, start_time, location, location_type, capacity, token, meeting_state, invite_expires_at, meeting_url, meeting_status)
+    	VALUES (#{title}, #{startTime}, #{location}, #{locationType}, #{capacity}, #{token}, #{meetingState}, #{inviteExpiresAt}, #{meetingUrl}, #{meetingStatus})
     </insert>
     
     <select id="selectMonthlySummaries" resultType="com.teamproject.meeting.dto.meeting.MainPageResDto$MonthlySummary">
@@ -68,4 +68,73 @@
 	    GROUP BY m.meeting_id
 	    ORDER BY m.start_time ASC
 	</select>
+	
+	<select id="getStep" resultType="com.teamproject.meeting.dto.meetingParticipant.StepResDto">
+		SELECT meeting_status
+		FROM meeting
+		WHERE meeting_id = #{meetingId}
+	</select>
+	
+	<update id="updateMeetingStatus">
+		UPDATE
+			meeting
+		SET
+			meeting_status = #{meeting_status}
+		WHERE
+			meeting_id = #{meetingId}
+	</update>
+	
+	<select id="getSortTimetable" resultType="com.teamproject.meeting.domain.timetableAlgorithm.TimetableAlgorithmQueryDto">
+		SELECT
+			mp.meeting_participant_id,
+			start_time,
+			end_time
+		FROM
+			meeting m
+		JOIN
+			meeting_participant mp ON mp.meeting_id = m.meeting_id
+		LEFT JOIN
+			meeting_availability ma ON ma.meeting_participant_id = mp.meeting_participant_id
+		WHERE
+			m.meeting_id = #{meetingId}
+	</select>
+	
+	<update id="confirmMeeting">
+		UPDATE meeting
+		SET
+			start_time = #{startTime},
+			end_time = #{endTime},
+			meeting_state = 'CONFIRMED',
+			meeting_status = 4
+		WHERE meeting_id = #{meetingId}
+	</update>
+	
+	<delete id="deleteMeeting">
+		DELETE FROM meeting
+		WHERE meeting_id = #{meetingId}
+	</delete>
+	
+	<select id="getMeetingDetail" resultType="com.teamproject.meeting.dto.meetingParticipant.MeetingDetailResDto$MeetingInfo">
+    	SELECT
+        	title,
+        	start_time,
+        	end_time,
+        	meeting_state,
+        	location_type,
+        	location
+    	FROM meeting
+    	WHERE meeting_id = #{meetingId}
+	</select>
+	
+	<update id="updateMeetingInfo">
+		UPDATE meeting
+		SET
+			title = #{dto.title},
+			start_time = #{dto.startTime},
+			end_time = #{dto.endTime},
+			location_type = #{dto.locationType},
+			location = #{dto.location},
+			capacity = #{dto.capacity}
+		WHERE meeting_id = #{meetingId}
+	</update>
 </mapper>

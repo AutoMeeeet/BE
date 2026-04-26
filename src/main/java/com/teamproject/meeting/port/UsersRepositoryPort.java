@@ -1,5 +1,8 @@
 package com.teamproject.meeting.port;
 
+import java.util.List;
+
+import com.teamproject.meeting.dto.meetingParticipant.MeetingDetailResDto;
 import com.teamproject.meeting.entity.Users;
 
 public interface UsersRepositoryPort {

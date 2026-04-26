@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS `MEETING` (
   `meeting_url` VARCHAR(2048) NOT NULL,
   `capacity` INT NOT NULL,
   `token` VARCHAR(255) NOT NULL,
-  `invite_expiresAt` DATETIME NOT NULL,
+  `invite_expires_at` DATETIME NOT NULL,
+  `meeting_status` INT NOT NULL,
   PRIMARY KEY (`meeting_id`)
 );
 
@@ -31,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `MEETING_PARTICIPANT` (
   `meeting_participant_id` BIGINT NOT NULL AUTO_INCREMENT,
   `meeting_id` BIGINT NOT NULL,
   `user_id` BIGINT NOT NULL,
-  `role` ENUM('참여자', '주최자') NOT NULL,
+  `role` ENUM('PARTICIPANT', 'ORGANIZER') NOT NULL,
   `email_notification` BOOLEAN NOT NULL,
-  `permission` ENUM('읽기', '쓰기', '권한주기') NOT NULL,
+  `permission` ENUM('READ', 'WRITE', 'AUTHORIZATION') NOT NULL,
   `timetable_case` BOOLEAN NOT NULL,
   `vote_case` BOOLEAN NOT NULL,
   PRIMARY KEY (`meeting_participant_id`),
-  FOREIGN KEY (`meeting_id`) REFERENCES `MEETING`(`meeting_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `USERS`(`user_id`)
+  FOREIGN KEY (`meeting_id`) REFERENCES `MEETING`(`meeting_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `USERS`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- MEETING_AVAILABILITY 테이블
@@ -47,9 +48,8 @@ CREATE TABLE IF NOT EXISTS `MEETING_AVAILABILITY` (
   `meeting_participant_id` BIGINT NOT NULL,
   `start_time` DATETIME NOT NULL,
   `end_time` DATETIME NOT NULL,
-  `weight` INT NOT NULL,
   PRIMARY KEY (`meeting_availability_id`),
-  FOREIGN KEY (`meeting_participant_id`) REFERENCES `MEETING_PARTICIPANT`(`meeting_participant_id`)
+  FOREIGN KEY (`meeting_participant_id`) REFERENCES `MEETING_PARTICIPANT`(`meeting_participant_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- MEETING_REFERENCE 테이블
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `MEETING_REFERENCE` (
   `meeting_id` BIGINT NOT NULL,
   `reference_url` VARCHAR(2048) NOT NULL,
   PRIMARY KEY (`reference_id`),
-  FOREIGN KEY (`meeting_id`) REFERENCES `MEETING`(`meeting_id`)
+  FOREIGN KEY (`meeting_id`) REFERENCES `MEETING`(`meeting_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- MINUTES 테이블
@@ -67,5 +67,25 @@ CREATE TABLE IF NOT EXISTS `MINUTES` (
   `meeting_id` BIGINT NOT NULL,
   `minutes_url` VARCHAR(2048) NOT NULL,
   PRIMARY KEY (`minutes_id`),
-  FOREIGN KEY (`meeting_id`) REFERENCES `MEETING`(`meeting_id`)
+  FOREIGN KEY (`meeting_id`) REFERENCES `MEETING`(`meeting_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- MEETING_VOTE_CANDIDATE 테이블
+CREATE TABLE IF NOT EXISTS `MEETING_VOTE_CANDIDATE` (
+	`meeting_candidate_id` BIGINT NOT NULL AUTO_INCREMENT,
+	`start_time` DATETIME NOT NULL,
+	`end_time` DATETIME NOT NULL,
+	`meeting_id` BIGINT NOT NULL,
+	PRIMARY KEY (`meeting_candidate_id`),
+	FOREIGN KEY (`meeting_id`) REFERENCES `MEETING`(`meeting_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- MEETING_VOTE_RECORD
+CREATE TABLE IF NOT EXISTS `MEETING_VOTE_RECORD` (
+	`meeting_vote_id` BIGINT NOT NULL AUTO_INCREMENT,
+	`meeting_candidate_id` BIGINT NOT NULL,
+	`meeting_participant_id` BIGINT NOT NULL,
+	PRIMARY KEY (`meeting_vote_id`),
+	FOREIGN KEY (`meeting_candidate_id`) REFERENCES `MEETING_VOTE_CANDIDATE`(`meeting_candidate_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (`meeting_participant_id`) REFERENCES `MEETING_PARTICIPANT`(`meeting_participant_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );

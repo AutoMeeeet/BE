@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MeetingAvailability {
-    private Long meetingAvailabilityId;
-    private Long meetingParticipantId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+public class MeetingVoteCandidate {
+	private Long meetingCandidateId;
+	private Long meetingId;
+	private LocalDateTime startTime;
+	private LocalDateTime endTime;
 }
