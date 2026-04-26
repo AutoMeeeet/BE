@@ -6,12 +6,17 @@ CREATE TABLE IF NOT EXISTS `USERS` (
   `nickname` VARCHAR(16) NOT NULL,
   `provider` ENUM('KAKAO', 'GOOGLE', 'LOCAL') NOT NULL,
   `profile_image` VARCHAR(512) NULL,
+<<<<<<< HEAD
+=======
+  `role` ENUM('USERS', 'ADMIN') NOT NULL,
+>>>>>>> origin/dev
   PRIMARY KEY (`user_id`)
 );
 
 -- MEETING 테이블
 CREATE TABLE IF NOT EXISTS `MEETING` (
   `meeting_id` BIGINT NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `title` VARCHAR(225) NOT NULL,
   `start_time` DATETIME NULL,
   `end_time` DATETIME NULL,
@@ -20,6 +25,18 @@ CREATE TABLE IF NOT EXISTS `MEETING` (
   `location` VARCHAR(255) NOT NULL,
   `date` DATETIME NOT NULL,
   `meeting_url` VARCHAR(2048) NOT NULL,
+=======
+  `title` VARCHAR(255) NOT NULL,
+  `start_time` DATETIME NULL,
+  `end_time` DATETIME NULL,
+  `meeting_state` ENUM('CONFIRMED', 'PENDING', 'FINISHED') NOT NULL,
+  `location_type` ENUM('ONLINE', 'OFFLINE') NOT NULL,
+  `location` VARCHAR(255) NOT NULL,
+  `meeting_url` VARCHAR(2048) NOT NULL,
+  `capacity` INT NOT NULL,
+  `token` VARCHAR(255) NOT NULL,
+  `invite_expiresAt` DATETIME NOT NULL,
+>>>>>>> origin/dev
   PRIMARY KEY (`meeting_id`)
 );
 

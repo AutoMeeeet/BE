@@ -36,5 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
+<<<<<<< HEAD
 ### MySQL docker 데이터 제외 ###
+=======
+# MySQL docker 데이터 제외
+>>>>>>> origin/dev
 mysql_data/

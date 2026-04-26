@@ -4,5 +4,12 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.teamproject.meeting.mapper.MeetingReferenceMapper">
+<<<<<<< HEAD
     <!-- 여기에 SQL 매핑 작성 -->
+=======
+    <insert id="createMeeting" useGeneratedKeys="true" keyProperty="referenceId">
+    	INSERT INTO MEETINGREFERENCE (meetingId, referenceUrl)
+    	VALUES (#{meetingId}, #{referenceUrl})
+    </insert>
+>>>>>>> origin/dev
 </mapper>

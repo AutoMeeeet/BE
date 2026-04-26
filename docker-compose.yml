@@ -19,6 +19,25 @@ services:
     restart: unless-stopped
     networks: 
       - meeting-network
+<<<<<<< HEAD
+=======
+      
+  my-redis:
+    image: redis:8.4.0
+    ports:
+      - 6379:6379
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - meeting-network
+>>>>>>> origin/dev
 
 networks:
   meeting-network:

@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+server:
+  port: 8080
+
+>>>>>>> origin/dev
 spring:
   application:
     name: Meeting Application
@@ -10,8 +16,55 @@ spring:
   sql:
     init:
       mode: always
+<<<<<<< HEAD
     
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
+=======
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  jwt:
+    secret: ${JWT_SECRET_KEY}
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-name: kakao
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: http://${BASE_URL}/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope:
+              - profile_nickname
+              - account_email
+          google:
+            client-name: google
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: http://${BASE_URL}/login/oauth2/code/google
+            authorization-grant-type: authorization_code
+            scope:
+              - profile
+              - email
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: http://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+>>>>>>> origin/dev
