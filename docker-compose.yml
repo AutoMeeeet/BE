@@ -1,0 +1,24 @@
+services:
+  my-mysql:
+    image: mysql:9.5.0
+    environment: 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: meeting
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: Asia/Seoul
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    ports: 
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks: 
+      - meeting-network
+
+networks:
+  meeting-network:
